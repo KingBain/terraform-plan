@@ -3,6 +3,9 @@ description: 'Terraform init, validate, format check and plan'
 author: 'Canadian Digital Service'
 
 inputs:
+  pr-number:
+    description: 'Override the pull request number for commenting'
+    required: false
   allow-failure:
     description: 'Allow the action to fail'
     required: false
