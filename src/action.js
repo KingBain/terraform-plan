@@ -185,7 +185,11 @@ const action = async () => {
 
   // Delete previous PR comments
   if (isCommentDelete) {
-    await deleteComment(octokit, buildGitHubContextOverride(github.context, prNumberOverride), commentTitle);
+    await deleteComment(
+      octokit,
+      buildGitHubContextOverride(github.context, prNumberOverride),
+      commentTitle,
+    );
   }
 
   // Check for changes
