@@ -11,7 +11,8 @@
             "tflint": "none",
             "terragrunt": "latest"
         },
-        "github-cli": "latest"
+        "github-cli": "latest",
+        "ghcr.io/devcontainers-community/npm-features/prettier:1": {}
     },
     "containerEnv": {
         "SHELL": "/bin/zsh",
