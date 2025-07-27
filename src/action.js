@@ -28,6 +28,23 @@ function parseInputInt(str, def) {
   return parsed;
 }
 
+function buildGitHubContextOverride(context, prNumberOverride) {
+  if (!prNumberOverride) return context;
+  const prNum = parseInt(prNumberOverride, 10);
+  if (isNaN(prNum)) return context;
+
+  const newContext = { ...context };
+  newContext.payload = {
+    ...context.payload,
+    pull_request: {
+      ...context.payload.pull_request,
+      number: prNum,
+    },
+  };
+
+  return newContext;
+}
+
 /**
  * Runs the action
  */
@@ -50,6 +67,7 @@ const action = async () => {
   const conftestChecks = sanitizeInput(core.getInput("conftest-checks"));
   const token = core.getInput("github-token");
   const octokit = token !== "false" ? github.getOctokit(token) : undefined;
+  const prNumberOverride = core.getInput("pr-number");
 
   const planCharLimit = core.getInput("plan-character-limit");
   const conftestCharLimit = core.getInput("conftest-character-limit");
@@ -167,7 +185,11 @@ const action = async () => {
 
   // Delete previous PR comments
   if (isCommentDelete) {
-    await deleteComment(octokit, github.context, commentTitle);
+    await deleteComment(
+      octokit,
+      buildGitHubContextOverride(github.context, prNumberOverride),
+      commentTitle,
+    );
   }
 
   // Check for changes
@@ -184,7 +206,7 @@ const action = async () => {
 
     await addComment(
       octokit,
-      github.context,
+      buildGitHubContextOverride(github.context, prNumberOverride),
       commentTitle,
       results,
       changes,
