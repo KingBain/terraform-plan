@@ -41,5 +41,5 @@ jobs:
         run: |
             cp -r $DIST $DIST_OLD
             npm run build
-            diff -r $DIST $DIST_OLD || exit 1
+            diff -r $DIST $DIST_OLD || exit 1 
           
